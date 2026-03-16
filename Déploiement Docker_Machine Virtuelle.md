@@ -3,7 +3,7 @@
 ## Déployer un environnement DOCKER
 ![alt text](docker.png)
 
-L'**environnement** DOCKER est
+L'**environnement** DOCKER est un environnement isolé et autonome qui encapsule une application ou un service, ainsi que toutes ses dépendances.
 
 🛠️<u>Pré-requis :</u> 
 * Installer le logiciel [Docker Desktop](https://docs.docker.com/desktop/)
@@ -49,7 +49,7 @@ Ainsi 3 fichiers seront créés automatiquement :
 
 Dockerfile comprend des instructions en couche pour construire une image.
 
-Ces instructions sont les suivantes *(liste non exhastive)* :
+Ces instructions sont les suivantes *(liste non exhaustive)* :
 
 **FROM** <image> - Cette instruction **spécifie l'image de base** à partir de laquelle la construction sera étendue. cf. [Docker Hub](https://hub.docker.com/) pour trouver l'image de base adéquate au projet.
 
@@ -72,14 +72,13 @@ WORKDIR /app
 ```Dockerfile
 COPY . .
 # Le premier point '.' correspond au chemin relatif de notre dossier courant du projet
-
 # Le deuxième point correspond au chemin relatif de notre conteneur correspondant au final au chemin absolu renseigné dans l'instruction WORKDIR.
 ```
 
 **RUN** <commande> - Cette instruction demande au builder d'exécuter la commande spécifiée.
 
 🤔<u> Les questions à se poser :</u>
-* Queles sont les **dépendances** à installer nécessaires au fonctionnement du **système d'exploitation** (langage) ?
+* Quelles sont les **dépendances** à installer nécessaires au fonctionnement du **système d'exploitation** (langage) ?
 
 * Quelles sont les **dépendances** à installer nécessaires au fonctionnement de l'application ?
 
@@ -88,7 +87,7 @@ COPY . .
 Se référer à la doc des languages/framework/librairie utilisés pour connaitre les port d'écoute par défaut.
 `Exemple` :
 [symfony](https://symfony.com/doc/current/setup.html) http://localhost:8000/ → EXPOSE 8000
-[react](https://symfony.com/doc/current/setup.html) 
+react via [vite](https://vite.dev/config/server-options.html#server-port) http://localhost:5173/ → EXPOSE 5173
 
 **CMD** ["<commande>", "<argument1>"] - Cette instruction définit la commande par défaut qu'exécutera un conteneur utilisant cette image.
 
@@ -99,52 +98,88 @@ Se référer à la doc des languages/framework/librairie utilisés pour connaitr
 <commande> -> npm
 <argument1> -> run
 <argument2> -> dev
-```
 
 ❓***Définition:***
-Une **image Docker** est un fichier exécutable via docker qui contient tout ce qui est nécessaire pour créer un conteneur.
+Une **image Docker** est un modèle de système, qui contient tous ce qui est nécessaire pour exécuter une application, y compris le code, les dépendances, les bibliothèques système et les fichiers de configuration.
 
-Un **conteneur** est
-
+Un **conteneur** est une instance exécutable d'une image Docker.
 
 ## Créer un fichier docker-compose.yml
 
 Docker Compose permet de construire plusieurs images en même temps pour un même projet.
 
-Le fichier docker-compose.yml permet de définir l'environnement de fonctionnement des conteneurs entre eux.
+Le fichier `docker-compose.yml` permet de définir l'environnement de fonctionnement des conteneurs entre eux.
 
-⚠️ Ce fichier étant un fichier .yml les indentations doivent être respectées auquel cas la construction pourrait échouer.
+> ⚠️ Ce fichier étant un fichier `.yml`, les indentations doivent être respectées, auquel cas la construction pourrait échouer.
 
-A COMPLÉTER
+### Architecture du fichier
 
-Architecture du fichier
-stmfony
-react
-db (data base)
+Le fichier est organisé autour de 4 **services** et d'un **volume** persistant :
 
-Explication des différents éléments
+---
 
+#### `symfony` — Backend
+
+- **build** : construit l'image depuis le dossier `./symfony` (où se trouve le `Dockerfile` Symfony)
+- **ports** : expose le port `8000` (port machine hôte → port conteneur)
+- **volumes** : monte le code source local dans le conteneur (`./symfony:/app`)
+- **environment** : définit les variables d'environnement, notamment `DATABASE_URL` qui pointe vers le conteneur `db`
+- **depends_on** : démarre uniquement après le service `db`
+
+---
+
+#### `react` — Frontend
+
+- **build** : construit l'image depuis le dossier `./react`
+- **ports** : expose le port `5173`, port par défaut de **Vite** (outil de dev server pour React)
+- **volumes** : monte le code source et isole le dossier `node_modules` du conteneur pour éviter les conflits avec la machine hôte
+- **stdin_open / tty** : maintient le terminal interactif actif (nécessaire pour que Vite reste en écoute)
+
+---
+
+#### `db` — Base de données MySQL
+
+- **image** : utilise l'image officielle `mysql:8.0` (pas de `Dockerfile` custom)
+- **environment** : crée automatiquement la base `lascar` avec le mot de passe `root`
+- **ports** : expose le port `3306` (port standard MySQL)
+- **volumes** : utilise le volume nommé `db_data` pour **persister les données** même si le conteneur est supprimé
+
+---
+
+#### `phpmyadmin` — Interface d'administration
+
+- **image** : utilise l'image officielle `phpmyadmin:latest`
+- **ports** : accessible depuis le navigateur sur le port `8081`
+- **environment** : pointe automatiquement vers le service `db`
+- **depends_on** : démarre après `db`
+
+---
+
+#### `volumes`
+```yml
+volumes:
+  db_data:
+```
 ## Intérargir avec les conteneurs
 
-Pour
 ```poweshell
 
 docker exec -it <nom_du_conteneur_php> <commande>
 
-Pour Symfony :
+Exemple pour intéragir la partie backend de Symfony :
 docker exec -it symfony-api php bin/console
 
 ```
 ## Créer une Machine Virtuelle (VM)
 
 🛠️<u>Pré-requis :</u> 
-* Installer logiciel [VirtualBox](https://www.virtualbox.org/) sur la machine local
-* Télécharger l'image ISO [Ubuntu Server](https://ubuntu.com/download/server)
+* Installer le logiciel [VirtualBox](https://www.virtualbox.org/) sur la machine local.
+* Télécharger l'image ISO [Ubuntu Server](https://ubuntu.com/download/server).
 
 ### 🔵 Étapes pour créer une Machine Virtuelle
 
 1. Ouvrir l'image ISO Ubuntu Server avec Virtual BOX
-2. Établir un script d'installation `install-docker.sh`
+2. Établir un script d'installation nommé `install-docker.sh`
 3. Établir configuration pour se connecter en SSH
 4. Créer un dossier
 5. Établir Docker Compose sur le serveur
