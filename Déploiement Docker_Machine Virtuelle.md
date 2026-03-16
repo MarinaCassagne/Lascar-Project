@@ -98,7 +98,7 @@ react via [vite](https://vite.dev/config/server-options.html#server-port) http:/
 <commande> -> npm
 <argument1> -> run
 <argument2> -> dev
-
+```
 ❓***Définition:***
 Une **image Docker** est un modèle de système, qui contient tous ce qui est nécessaire pour exécuter une application, y compris le code, les dépendances, les bibliothèques système et les fichiers de configuration.
 
