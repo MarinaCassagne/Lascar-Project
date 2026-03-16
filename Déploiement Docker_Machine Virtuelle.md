@@ -162,14 +162,15 @@ volumes:
 ```
 ## Intérargir avec les conteneurs
 
-```poweshell
-
+```powerShell
 docker exec -it <nom_du_conteneur_php> <commande>
-
-Exemple pour intéragir la partie backend de Symfony :
-docker exec -it symfony-api php bin/console
-
 ```
+
+`Exemple` : pour intéragir la partie backend de Symfony :
+```powerShell
+docker exec -it symfony-api php bin/console
+```
+
 ## Créer une Machine Virtuelle (VM)
 
 🛠️<u>Pré-requis :</u> 
