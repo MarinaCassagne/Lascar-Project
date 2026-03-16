@@ -85,8 +85,8 @@ COPY . .
 
 **EXPOSE** <numéro-de-port> - Cette instruction configure l'image pour indiquer un port que l'image souhaite exposer.
 Se référer à la doc des languages/framework/librairie utilisés pour connaitre les port d'écoute par défaut.
-`Exemple` :
-[symfony](https://symfony.com/doc/current/setup.html) http://localhost:8000/ → EXPOSE 8000
+`Exemple` : </br>
+[symfony](https://symfony.com/doc/current/setup.html) http://localhost:8000/ → EXPOSE 8000 </br>
 react via [vite](https://vite.dev/config/server-options.html#server-port) http://localhost:5173/ → EXPOSE 5173
 
 **CMD** ["<commande>", "<argument1>"] - Cette instruction définit la commande par défaut qu'exécutera un conteneur utilisant cette image.
