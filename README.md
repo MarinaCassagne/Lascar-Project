@@ -27,10 +27,14 @@ La phase de conception réalisée sur FIGMA inclus les éléments suivants :
 Les dépots distants du projet :
 
 🛠️ Symfony
-API → https://gitlab.com/marinacassagnebeweb1/Las-Car_SymfonyDiscovery
+API 
+→ https://gitlab.com/marinacassagnebeweb1/Las-Car_SymfonyDiscovery
+→ https://github.com/MarinaCassagne/Lascar-Symfony
 
 🛠️ React
-Vue Web → https://gitlab.com/GabinTas2/react_lascar
+Vue Web 
+→ https://gitlab.com/GabinTas2/react_lascar
+→ https://github.com/MarinaCassagne/Lascar-React
 
 🛠️ Flutter
 Vue Mobile → https://gitlab.com/GabinTas2/flutter_lascar
