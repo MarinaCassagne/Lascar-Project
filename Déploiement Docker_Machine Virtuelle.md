@@ -1,14 +1,17 @@
 # Déploiement du projet
 
 ## Déployer un environnement DOCKER
+
 ![alt text](docker.png)
 
 L'**environnement** DOCKER est un environnement isolé et autonome qui encapsule une application ou un service, ainsi que toutes ses dépendances.
 
-🛠️<u>Pré-requis :</u> 
-* Installer le logiciel [Docker Desktop](https://docs.docker.com/desktop/)
+🛠️<u>Pré-requis :</u>
+
+- Installer le logiciel [Docker Desktop](https://docs.docker.com/desktop/)
 
 ### 🔵 Étapes pour créer un environnement DOCKER
+
 1. Établir une architecture dossier client / serveur
 2. Initialiser le projet
 3. Établir les fichiers `Dockerfile`
@@ -29,6 +32,7 @@ Dossier <nom du projet>
   ↳ Fichier docker-compose.yml
 
 ```
+
 Le dossier backend nommé `symfony` pour notre projet LAS'CAR comprend le code source réalisé avec le framework `Symfony`.
 
 Le dossier frontend nommé `react`pour notre projet LAS'CAR comprend le code source réalisé avec la librairie `React` et un bundler : outil de construction `Vite` pour l'affichage sur le navigateur.
@@ -38,10 +42,11 @@ Un conteneur sera créé pour chacun de ces dossiers.
 ## Initialiser projet
 
 En début de projet, lancer la commande `docker init` dans chaque dossier (backend, frontend) du projet.
-Ainsi 3 fichiers seront créés automatiquement : 
-* Dockerfile
-* .dockerignore
-* compose.yaml
+Ainsi 3 fichiers seront créés automatiquement :
+
+- Dockerfile
+- .dockerignore
+- compose.yaml
 
 ## Créer un fichier Dockerfile
 
@@ -49,26 +54,31 @@ Ainsi 3 fichiers seront créés automatiquement :
 
 Dockerfile comprend des instructions en couche pour construire une image.
 
-Ces instructions sont les suivantes *(liste non exhaustive)* :
+Ces instructions sont les suivantes _(liste non exhaustive)_ :
 
 **FROM** <image> - Cette instruction **spécifie l'image de base** à partir de laquelle la construction sera étendue. cf. [Docker Hub](https://hub.docker.com/) pour trouver l'image de base adéquate au projet.
 
 🤔<u> Les questions à se poser :</u>
-* Quel langage utilise mon projet ?
-* Quelle version de ce langage ?
 
-**WORKDIR** <chemin> - Cette instruction définit le "**répertoire de travail**", c'est-à-dire le chemin absolu dans l'image où les fichiers seront copiés et les commandes seront exécutées. 
+- Quel langage utilise mon projet ?
+- Quelle version de ce langage ?
+
+**WORKDIR** <chemin> - Cette instruction définit le "**répertoire de travail**", c'est-à-dire le chemin absolu dans l'image où les fichiers seront copiés et les commandes seront exécutées.
 
 Sur Linux, /var/www est le répertoire de travail conventionnel pour héberger les applications web servies par un serveur HTTP (Apache, Nginx). C'est pourquoi sur Symfony on écrira :
+
 ```Dockerfile
 WORKDIR /var/www
 ```
+
 Pour React, on utilisera par convention de conteneur Node.js :
+
 ```Dockerfile
 WORKDIR /app
-``` 
+```
 
 **COPY** <chemin-hôte> <chemin-image> - Cette instruction demande au builder de copier des fichiers depuis l'hôte et de les placer dans l'image du conteneur.
+
 ```Dockerfile
 COPY . .
 # Le premier point '.' correspond au chemin relatif de notre dossier courant du projet
@@ -78,10 +88,10 @@ COPY . .
 **RUN** <commande> - Cette instruction demande au builder d'exécuter la commande spécifiée.
 
 🤔<u> Les questions à se poser :</u>
-* Quelles sont les **dépendances** à installer nécessaires au fonctionnement du **système d'exploitation** (langage) ?
 
-* Quelles sont les **dépendances** à installer nécessaires au fonctionnement de l'application ?
+- Quelles sont les **dépendances** à installer nécessaires au fonctionnement du **système d'exploitation** (langage) ?
 
+- Quelles sont les **dépendances** à installer nécessaires au fonctionnement de l'application ?
 
 **EXPOSE** <numéro-de-port> - Cette instruction configure l'image pour indiquer un port que l'image souhaite exposer.
 Se référer à la doc des languages/framework/librairie utilisés pour connaitre les port d'écoute par défaut. </br>
@@ -92,13 +102,15 @@ react via [vite](https://vite.dev/config/server-options.html#server-port) http:/
 **CMD** ["<commande>", "<argument1>"] - Cette instruction définit la commande par défaut qu'exécutera un conteneur utilisant cette image.
 
 🤔<u> Les questions à se poser :</u>
-* Quelles sont les commandes pour installer les dépendances nécessaires au fonctionnement de l'application ?
+
+- Quelles sont les commandes pour installer les dépendances nécessaires au fonctionnement de l'application ?
 
 ```Dockerfile
 <commande> -> npm
 <argument1> -> run
 <argument2> -> dev
 ```
+
 ❓***Définition:***
 Une **image Docker** est un modèle de système, qui contient tous ce qui est nécessaire pour exécuter une application, y compris le code, les dépendances, les bibliothèques système et les fichiers de configuration.
 
@@ -156,26 +168,112 @@ Le fichier est organisé autour de 4 **services** et d'un **volume** persistant 
 ---
 
 #### `volumes`
+
 ```yml
 volumes:
   db_data:
 ```
+
+## Lancer la création et le démarrage des conteneurs
+
+Ouvrir le terminal à la racine du projet et lancer la commande suivante :
+
+```powerShell
+docker compose up -d
+```
+
+Vérifier l'absence de message d'erreur dans le terminal.
+Vérifier que chaque conteneur est démarrer dans l'application `Docker Desktop`, en cliquant sur `Constainers` :
+![alt text](containers.png) </br>
+puis dans la colonne `Actions`, l'icone doit proposer Stop ![alt text](blue_square.png) attestant que le conteneur est démarré.
+
+## Ouvrir l'application dans un navigateur
+
+## Commandes Docker
+
+### Construire une image personnalisée
+
+```bash
+docker build -t <nom de l\'image> .
+```
+
+-t permet de donner un nom à l’image.
+Le point . indique que le contexte de build est le dossier courant.
+
+### Créer un conteneur
+
+```bash
+docker run <nom de l\'image>
+```
+
+### Renommer un conteneur
+
+```bash
+docker rename <ID du conteneur> <nouveau nom du conteneur>
+```
+
+### Lister des conteneurs en cours d'exécution
+
+```bash
+docker ps
+```
+
+### Lister tous les conteneurs
+
+```bash
+docker ps -a
+```
+
+### Lister les images
+
+```bash
+docker images
+```
+
+### Supprimer un ou des conteneurs
+
+```bash
+docker rm <id du conteneur>
+```
+
+### Supprimer un ou des images
+
+```bash
+docker image rm <id de l\'image>
+```
+
+### Démarrer un conteneur
+
+```bash
+docker start <id du conteneur>
+```
+
+-it : intérargir
+
+### Arrêter un conteneur
+
+```bash
+docker stop <id du conteneur>
+```
+
 ## Intérargir avec les conteneurs
 
 ```powerShell
-docker exec -it <nom_du_conteneur_php> <commande>
+docker exec -it <nom_du_conteneur> <commande>
 ```
 
-`Exemple` : pour intéragir la partie backend de Symfony :
+`Exemple` pour intéragir avec la partie backend de Symfony :
+
 ```powerShell
 docker exec -it symfony-api php bin/console
 ```
 
 ## Créer une Machine Virtuelle (VM)
 
-🛠️<u>Pré-requis :</u> 
-* Installer le logiciel [VirtualBox](https://www.virtualbox.org/) sur la machine local.
-* Télécharger l'image ISO [Ubuntu Server](https://ubuntu.com/download/server).
+🛠️<u>Pré-requis :</u>
+
+- Installer le logiciel [VirtualBox](https://www.virtualbox.org/) sur la machine local.
+- Télécharger l'image ISO [Ubuntu Server](https://ubuntu.com/download/server).
 
 ### 🔵 Étapes pour créer une Machine Virtuelle
 
@@ -188,5 +286,28 @@ docker exec -it symfony-api php bin/console
 7. Lancer docker compose `docker compose up -d`
 8. Tester sur machine local (donc pas sur serveur)
 
+---
 
+# PROJET LAS'CAR
 
+1-**Cloner le projet [Lascar-Project](https://github.com/MarinaCassagne/Lascar-Project)**
+
+2-**Cloner le projet [Lascar-Symfony](https://github.com/MarinaCassagne/Lascar-Symfony)** dans le dossier du projet `Lascar Project`
+
+2-**Cloner le projet [Lascar-React](https://github.com/MarinaCassagne/Lascar-React)** dans le dossier du projet `Lascar Project`
+
+3-Ouvrir le terminal à la racine du projet et lancer la commande suivante pour lancer la création et le démarrage des conteneurs :
+
+```powerShell
+docker compose up -d
+```
+
+### 👀 **Points à vérifier pour voir si tout fonctionne**
+
+- Vérifier l'absence de message d'erreur dans le terminal.
+
+- Vérifier que chaque conteneur est démarrer dans l'application `Docker Desktop`, en cliquant sur `Constainers` :
+  <img src="containers.png" width=130px></img>
+- Dans la colonne `Actions`, l'icone doit proposer Stop ![alt text](blue_square.png) attestant que le conteneur est démarré.
+
+En cas de bug, cliquer sur le nom du conteneur, pour consulter les `logs` afin d'identifier le problème et le résoudre.
