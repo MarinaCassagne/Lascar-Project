@@ -1,37 +1,36 @@
 services:
- 
   # Symfony backend
-  symfony:
-    build: ./symfony
-    container_name: symfony-api
+  lascar-symfony:
+    build: ./Lascar-Symfony
+    container_name: lascar-api
     ports:
       - "8000:8000"
     volumes:
-      - ./symfony:/app
+      - ./Lascar-Symfony:/app
     environment:
       APP_ENV: dev
       APP_SECRET: uneClefSecrete123
       # Connexion à MySQL (containeur 'db')
       DATABASE_URL: mysql://root:root@db:3306/lascar?serverVersion=8.0&charset=utf8mb4
     depends_on:
-      - db
- 
+      - lascar-db
+
   # React frontend
-  react:
-    build: ./react
-    container_name: react-app
+  lascar-react:
+    build: ./Lascar-React
+    container_name: lascar-frontend
     ports:
       - "5173:5173"
     volumes:
-      - ./react:/app
+      - ./Lascar-React:/app
       - /app/node_modules
     stdin_open: true
     tty: true
- 
+
   # MySQL database(db)
-  db:
+  lascar-db:
     image: mysql:8.0
-    container_name: db
+    container_name: lascar-db
     environment:
       MYSQL_DATABASE: lascar
       MYSQL_ROOT_PASSWORD: root
@@ -40,19 +39,17 @@ services:
     volumes:
       - db_data:/var/lib/mysql
 
-  phpmyadmin:
+  lascar-phpmyadmin:
     image: phpmyadmin:latest
-    container_name: phpmyadmin
+    container_name: lascar-phpmyadmin
     ports:
       - "8081:80"
     environment:
-      PMA_HOST: db
+      PMA_HOST: lascar-db
       PMA_PORT: 3306
       MYSQL_ROOT_PASSWORD: root
     depends_on:
-      - db 
+      - lascar-db
 
 volumes:
-  db_data:  
-
-  
+  db_data:

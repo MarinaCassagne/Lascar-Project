@@ -310,3 +310,16 @@ docker compose up -d
 - Dans la colonne `Actions`, l'icone doit proposer Stop ![alt text="Icone Stop Docker"](./IMG/blue_square.png) attestant que le conteneur est démarré.
 
 En cas de bug, cliquer sur le nom du conteneur, pour consulter les `logs` afin d'identifier le problème et le résoudre.
+
+4- **Charger le schéma de la base de données** en exécutant les migrations Doctrine depuis le conteneur Symfony :
+
+```powerShell
+docker exec lascar-api php bin/console doctrine:migrations:migrate --no-interaction
+```
+
+> `docker exec` : exécute une commande dans un conteneur déjà en cours d'exécution.  
+> `lascar-api` : nom du conteneur Symfony (défini dans `docker-compose.yml`).  
+> `php bin/console doctrine:migrations:migrate` : commande Symfony qui applique toutes les migrations en attente et crée les tables en base de données.  
+> `--no-interaction` : évite que la commande demande une confirmation manuelle.
+
+✅ Cette commande crée toutes les tables du projet (user, trajet, reservation, avis, vehicule, etc.) dans la base de données `lascar`.
