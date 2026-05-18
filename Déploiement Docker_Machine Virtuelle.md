@@ -305,9 +305,8 @@ docker compose up -d
 ### 👀 **Points à vérifier pour voir si tout fonctionne**
 
 - Vérifier l'absence de message d'erreur dans le terminal.
-
-- Vérifier que chaque conteneur est démarrer dans l'application `Docker Desktop`, en cliquant sur `Constainers` :
-  <img src="containers.png" width=130px></img>
-- Dans la colonne `Actions`, l'icone doit proposer Stop ![alt text](blue_square.png) attestant que le conteneur est démarré.
+- Vérifier que chaque conteneur est démarrer dans l'application `Docker Desktop`, en cliquant sur `Containers` :
+  <img src="./IMG/containers.png" aria-label="Icone conteneur de Docker" width=130px></img>
+- Dans la colonne `Actions`, l'icone doit proposer Stop ![alt text="Icone Stop Docker"](./IMG/blue_square.png) attestant que le conteneur est démarré.
 
 En cas de bug, cliquer sur le nom du conteneur, pour consulter les `logs` afin d'identifier le problème et le résoudre.
