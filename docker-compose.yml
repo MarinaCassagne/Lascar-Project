@@ -10,8 +10,8 @@ services:
     environment:
       APP_ENV: dev
       APP_SECRET: uneClefSecrete123
-      # Connexion à MySQL (containeur 'db')
-      DATABASE_URL: mysql://root:root@db:3306/lascar?serverVersion=8.0&charset=utf8mb4
+      # Connexion à MySQL (containeur 'lascar-db')
+      DATABASE_URL: mysql://root:root@lascar-db:3306/lascar?serverVersion=8.0&charset=utf8mb4
     depends_on:
       - lascar-db
 
