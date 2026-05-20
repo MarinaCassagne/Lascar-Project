@@ -6,7 +6,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./Lascar-Symfony:/app
+      - ./Lascar-Symfony:/var/www
     environment:
       APP_ENV: dev
       APP_SECRET: uneClefSecrete123
