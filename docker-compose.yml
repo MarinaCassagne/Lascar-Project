@@ -8,10 +8,12 @@ services:
     volumes:
       - ./Lascar-Symfony:/var/www
     environment:
-      APP_ENV: dev
-      APP_SECRET: uneClefSecrete123
-      # Connexion à MySQL (containeur 'lascar-db')
-      DATABASE_URL: mysql://root:root@lascar-db:3306/lascar?serverVersion=8.0&charset=utf8mb4
+      APP_ENV: ${APP_ENV}
+      APP_SECRET: ${APP_SECRET}
+      DATABASE_URL: ${DATABASE_URL}
+      CORS_ALLOW_ORIGIN: ${CORS_ALLOW_ORIGIN}
+      JWT_PASSPHRASE: ${JWT_PASSPHRASE}
+
     depends_on:
       - lascar-db
 
@@ -32,8 +34,8 @@ services:
     image: mysql:8.0
     container_name: lascar-db
     environment:
-      MYSQL_DATABASE: lascar
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
