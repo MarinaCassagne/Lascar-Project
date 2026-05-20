@@ -182,6 +182,21 @@ Ouvrir le terminal à la racine du projet et lancer la commande suivante :
 docker compose up -d
 ```
 
+### `up -d` vs `up -d --build`
+
+| Commande                       | Comportement                                                                                                                                                 |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `docker compose up -d`         | Démarre les conteneurs avec les **images existantes**. Si une image a déjà été buildée, elle est réutilisée telle quelle — même si le `Dockerfile` a changé. |
+| `docker compose up -d --build` | **Rebuilde les images** avant de démarrer les conteneurs. Docker relit le `Dockerfile` et reconstruit l'image si nécessaire.                                 |
+
+**Quand utiliser `--build` :**
+
+- Première fois que le projet est lancé
+- Après une modification du `Dockerfile`
+- Après une modification de `composer.json` ou `package.json`
+
+> ℹ️ Modifier du code PHP ou React ne nécessite **pas** de rebuild — les fichiers sont montés en volume et reflètent les changements en temps réel.
+
 Vérifier l'absence de message d'erreur dans le terminal.
 Vérifier que chaque conteneur est démarrer dans l'application `Docker Desktop`, en cliquant sur `Constainers` :
 ![alt text](containers.png) </br>
@@ -299,7 +314,7 @@ docker exec -it symfony-api php bin/console
 3-Ouvrir le terminal à la racine du projet et lancer la commande suivante pour lancer la création et le démarrage des conteneurs :
 
 ```powerShell
-docker compose up -d
+docker compose up -d --build
 ```
 
 ### 👀 **Points à vérifier pour voir si tout fonctionne**
