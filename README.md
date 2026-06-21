@@ -1,6 +1,6 @@
 # Lascar-Project
 
-LAS'CAR est une solution applicative pour covoiturer à l'instar de BLABLACAR.
+LAS'CAR est une solution applicative pour covoiturer à l'instar de BLABLACAR. </br>
 Les visiteurs peuvent : consulter la page d'accueil, consulter les trajets, sans pour autant réserver.
 Les membres connectés, comme un conducteur ou un passager, ont accès à plus de fonctionnalités.
 
