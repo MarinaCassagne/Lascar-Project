@@ -26,17 +26,18 @@ La phase de conception réalisée sur FIGMA inclus les éléments suivants :
 
 Les dépots distants du projet :
 
-🛠️ Symfony
-API 
+🛠️ Symfony </br>
+API </br>
 → https://gitlab.com/marinacassagnebeweb1/Las-Car_SymfonyDiscovery
 → https://github.com/MarinaCassagne/Lascar-Symfony
 
-🛠️ React
-Vue Web 
+🛠️ React </br>
+Vue Web </br>
 → https://gitlab.com/GabinTas2/react_lascar
 → https://github.com/MarinaCassagne/Lascar-React
 
-🛠️ Flutter
-Vue Mobile → https://gitlab.com/GabinTas2/flutter_lascar
+🛠️ Flutter </br>
+Vue Mobile </br>
+→ https://gitlab.com/GabinTas2/flutter_lascar
 
 L'architecture de l'application est de type client / serveur.
